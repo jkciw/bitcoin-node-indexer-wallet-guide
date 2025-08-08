@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <title>macOS Bitcoin Node Workshop - Flash Card Guide</title>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="../images/bitshala-favicon.ico"
+    />
+    <!--- Cloudflare icons-->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+      }
+
+      /* Navigation */
+      .tutorial-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 1rem 0;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+      }
+
+      .brand-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      /* Logo with proper sizing */
+      .bitshala-logo {
+        height: 50px;
+        width: auto;
+        transition: filter 0.3s ease;
+      }
+
+      .brand-text {
+        color: white;
+        font-weight: bold;
+        font-size: 1.2em;
+        text-decoration: none;
+      }
+
+      .brand-text:hover {
+        color: #f0f0f0;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+      }
+
+      .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        transition: background 0.3s;
+        font-weight: 500;
+      }
+
+      .nav-links a:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .nav-links a.current {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      /* Progress indicator */
+      .scroll-progress {
+        position: fixed;
+        top: 0;
+        right: 20px;
+        width: 200px;
+        padding: 1rem;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        border-radius: 0 0 10px 10px;
+        z-index: 999;
+        transform: translateY(-100%);
+        transition: transform 0.3s;
+      }
+
+      .scroll-progress.visible {
+        transform: translateY(80px);
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
+        overflow: hidden;
+        margin-top: 0.5rem;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: #4caf50;
+        width: 0%;
+        transition: width 0.3s;
+      }
+
+      /* Main content */
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 120px 20px 40px;
+      }
+
+      /* Hero section */
+      .hero-card {
+        background: white;
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e0e0e0;
+      }
+
+      .hero-card h1 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        font-size: 2.2em;
+        font-weight: 700;
+      }
+
+      .hero-card p {
+        color: #666;
+        font-size: 1.1em;
+        margin-bottom: 1rem;
+      }
+
+      .hero-card p:last-child {
+        margin-bottom: 0;
+        font-weight: 600;
+        color: #3498db;
+      }
+
+      /* Step cards */
+      .step-card {
+        background: white;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e0e0e0;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: slideUp 0.6s ease forwards;
+      }
+
+      @keyframes slideUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .step-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .step-number {
+        background: rgba(255, 255, 255, 0.2);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4em;
+        font-weight: bold;
+        flex-shrink: 0;
+      }
+
+      .step-title {
+        flex: 1;
+      }
+
+      .step-title h2 {
+        font-size: 1.5em;
+        margin-bottom: 0.3rem;
+      }
+
+      .step-title p {
+        opacity: 0.9;
+        font-size: 1em;
+      }
+
+      .step-content {
+        padding: 2rem;
+      }
+
+      .step-section {
+        margin-bottom: 2rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .step-section:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+
+      .step-section h3 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        padding-left: 1rem;
+        border-left: 4px solid #3498db;
+        font-size: 1.2em;
+      }
+
+      .step-section p {
+        color: #666;
+        margin-bottom: 1rem;
+        line-height: 1.7;
+      }
+
+      /* Code styling */
+      .code-block {
+        background: #2d3748;
+        color: #e2e8f0;
+        padding: 1rem;
+        border-radius: 8px;
+        font-family: "Monaco", "Consolas", monospace;
+        font-size: 0.9em;
+        margin: 1rem 0;
+        overflow-x: auto;
+        position: relative;
+      }
+
+      .code-block::before {
+        content: "$ ";
+        color: #4ade80;
+        font-weight: bold;
+      }
+
+      .config-block {
+        background: #1a202c;
+        color: #e2e8f0;
+        padding: 1.5rem;
+        border-radius: 8px;
+        font-family: "Monaco", "Consolas", monospace;
+        font-size: 0.85em;
+        margin: 1rem 0;
+        overflow-x: auto;
+        border-left: 4px solid #3182ce;
+      }
+
+      /* Image containers */
+      .image-container {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 1.5rem 0;
+        text-align: center;
+      }
+
+      .step-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 6px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Links and buttons */
+      .external-link {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 600;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.3s;
+      }
+
+      .external-link:hover {
+        border-bottom-color: #3498db;
+      }
+
+      /* Warning boxes */
+      .warning-box {
+        background: #fff3cd;
+        border: 2px solid #ffc107;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+      }
+
+      .warning-box h4 {
+        color: #856404;
+        margin-bottom: 0.8rem;
+        font-size: 1.1em;
+      }
+
+      .warning-box p {
+        color: #856404;
+        margin: 0;
+      }
+
+      /* Success message */
+      .success-box {
+        background: #d4edda;
+        border: 2px solid #28a745;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        text-align: center;
+      }
+
+      .success-box h3 {
+        color: #155724;
+        margin-bottom: 0.8rem;
+      }
+
+      .success-box p {
+        color: #155724;
+        margin: 0;
+      }
+
+      /* Footer */
+      .footer {
+        background: #f8f9fa;
+        border-top: 1px solid #e9ecef;
+        padding: 2rem 0;
+        margin-top: 3rem;
+        text-align: center;
+      }
+
+      .footer-logo {
+        height: 40px;
+        width: auto;
+        margin-bottom: 1rem;
+        transition: filter 0.3s ease;
+      }
+
+      .footer p {
+        color: #666;
+        margin: 0.5rem 0;
+      }
+
+      .footer .bitshala-link {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .footer .bitshala-link:hover {
+        text-decoration: underline;
+      }
+
+      /* Dark mode support */
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+          color: #e0e0e0;
+        }
+
+        /* Invert logos for dark mode */
+        .bitshala-logo,
+        .footer-logo {
+          filter: invert(1) brightness(1.2);
+        }
+
+        .tutorial-nav {
+          background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        }
+
+        .hero-card,
+        .step-card {
+          background: #2a2a2a;
+          color: #e0e0e0;
+          border-color: #404040;
+        }
+
+        .hero-card h1 {
+          color: #ffffff;
+        }
+
+        .hero-card p {
+          color: #cccccc;
+        }
+
+        .step-section h3 {
+          color: #e0e0e0;
+          border-left-color: #58a6ff;
+        }
+
+        .step-section p {
+          color: #b0b0b0;
+        }
+
+        .image-container {
+          background: #2a2a2a;
+          border-color: #404040;
+        }
+
+        .warning-box {
+          background: #3d2a00;
+          border-color: #ffc107;
+        }
+
+        .warning-box h4,
+        .warning-box p {
+          color: #ffc107;
+        }
+
+        .success-box {
+          background: #1e3a1e;
+          border-color: #28a745;
+        }
+
+        .success-box h3,
+        .success-box p {
+          color: #28a745;
+        }
+
+        .footer {
+          background: #2a2a2a;
+          border-top-color: #404040;
+        }
+
+        .footer p {
+          color: #b0b0b0;
+        }
+
+        .footer .bitshala-link {
+          color: #58a6ff;
+        }
+      }
+
+      /* Responsive design */
+      @media (max-width: 768px) {
+        .nav-container {
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .nav-links {
+          gap: 1rem;
+        }
+
+        .container {
+          padding: 140px 15px 30px;
+        }
+
+        .hero-card h1 {
+          font-size: 1.8em;
+        }
+
+        .step-header {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .step-number {
+          margin-bottom: 1rem;
+        }
+
+        .bitshala-logo {
+          height: 40px;
+        }
+
+        .scroll-progress {
+          display: none;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .step-content {
+          padding: 1.5rem;
+        }
+
+        .hero-card {
+          padding: 1.5rem;
+        }
+      }
+      /* Table of Contents Menu */
+      .toc-menu {
+        position: fixed;
+        top: 0;
+        right: 20px;
+        width: 280px;
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        border-radius: 0 0 12px 12px;
+        z-index: 998;
+        transform: translateY(-100%);
+        transition: transform 0.3s ease;
+        backdrop-filter: blur(10px);
+      }
+
+      .toc-menu.visible {
+        transform: translateY(80px);
+      }
+
+      .toc-header {
+        padding: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        font-weight: bold;
+        font-size: 0.9em;
+      }
+
+      .toc-list {
+        padding: 0.5rem 0;
+      }
+
+      .toc-item {
+        display: block;
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        font-size: 0.85em;
+        border-left: 3px solid transparent;
+        transition: all 0.3s ease;
+      }
+
+      .toc-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border-left-color: #667eea;
+      }
+
+      .toc-item.active {
+        background: rgba(102, 126, 234, 0.2);
+        color: white;
+        border-left-color: #667eea;
+      }
+
+      .toc-step-number {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        text-align: center;
+        line-height: 24px;
+        margin-right: 0.8rem;
+        font-size: 0.8em;
+        font-weight: bold;
+      }
+
+      .toc-item.active .toc-step-number {
+        background: #667eea;
+        color: white;
+      }
+
+      /* Adjust scroll progress position */
+      .scroll-progress {
+        position: fixed;
+        top: 0;
+        right: 20px;
+        width: 280px; /* Match TOC width */
+        padding: 1rem;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        border-radius: 0 0 10px 10px;
+        z-index: 999;
+        transform: translateY(-100%);
+        transition: transform 0.3s;
+      }
+
+      /* Dark mode adjustments */
+      @media (prefers-color-scheme: dark) {
+        .toc-menu {
+          background: rgba(42, 42, 42, 0.95);
+          border: 1px solid #404040;
+        }
+
+        .toc-header {
+          border-bottom-color: #404040;
+        }
+      }
+
+      /* Mobile adjustments */
+      @media (max-width: 768px) {
+        .toc-menu,
+        .scroll-progress {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="tutorial-nav">
+      <div class="nav-container">
+        <div class="brand-left">
+          <a
+            href="https://bitshala.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="../images/bitshala-logo.png"
+              alt="Bitshala Logo"
+              class="bitshala-logo"
+            />
+          </a>
+          <a href="../docs/index.html" class="brand-text"
+            >The Sovereign Bitcoiner's ToolKit</a
+          >
+        </div>
+        <div class="nav-links">
+          <a href="../docs/index.html">Home</a>
+          <a href="../win/index.html">Windows Guide</a>
+          <a href="index.html" class="current">Mac Guide</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Progress Indicator -->
+    <div class="scroll-progress" id="scrollProgress">
+      <div>Progress</div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+    <!-- Table of Contents Menu -->
+    <div class="toc-menu" id="tocMenu">
+      <div class="toc-header"><br></div>
+      <nav class="toc-list">
+        <a href="#step1" class="toc-item" data-step="1">
+          <span class="toc-step-number">1</span>
+          Initial Setup
+        </a>
+        <a href="#step2" class="toc-item" data-step="2">
+          <span class="toc-step-number">2</span>
+          Download Binaries
+        </a>
+        <a href="#step3" class="toc-item" data-step="3">
+          <span class="toc-step-number">3</span>
+          Verify Downloads
+        </a>
+        <a href="#step4" class="toc-item" data-step="4">
+          <span class="toc-step-number">4</span>
+          Install & Configure
+        </a>
+        <a href="#step5" class="toc-item" data-step="5">
+          <span class="toc-step-number">5</span>
+          Blockchain Sync
+        </a>
+        <a href="#step6" class="toc-item" data-step="6">
+          <span class="toc-step-number">6</span>
+          Install Electrum Server
+        </a>
+        <a href="#step7" class="toc-item" data-step="7">
+          <span class="toc-step-number">7</span>
+          Configure Fulcrum
+        </a>
+        <a href="#step8" class="toc-item" data-step="8">
+          <span class="toc-step-number">8</span>
+          Install Wallet
+        </a>
+        <a href="#step9" class="toc-item" data-step="9">
+          <span class="toc-step-number">9</span>
+          Connect Wallet
+        </a>
+        <a href="#step10" class="toc-item" data-step="10">
+          <span class="toc-step-number">10</span>
+          Create Wallet
+        </a>
+      </nav>
+    </div>
+    <div class="container">
+      <!-- Hero Section -->
+      <div class="hero-card">
+        <h1><i class="fab fa-apple"></i> macOS Guide</h1>
+        <p>
+          <strong
+            >Complete guide to setup Bitcoin Core, Fulcrum, and Sparrow Wallet
+            on macOS</strong
+          >
+        </p>
+        <p>Scroll down to follow each step</p>
+      </div>
+
+      <!-- Step 1: Initial Setup -->
+      <div class="step-card" , id="step1">
+        <div class="step-header">
+          <div class="step-number">1</div>
+          <div class="step-title">
+            <h2>Initial Setup</h2>
+            <p>Create your Bitcoin workspace directory</p>
+          </div>
+        </div>
+        <div class="step-content">
+          <div class="step-section">
+            <h3>Create "bitcoinnode" Directory</h3>
+            <p>
+              First, let's create a dedicated folder for all our Bitcoin files.
+            </p>
+            <div class="code-block">mkdir ~/Documents/bitcointestnet</div>
+            <div class="image-container">
+              <img
+                src="../images/mac/step1_folder.png"
+                alt="Terminal showing mkdir command execution"
+                class="step-image"
+              />
+              <p><em>Creating the bitcoinnode directory using terminal</em></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Download Binaries -->
+      <div class="step-card" , id="step2">
+        <div class="step-header">
+          <div class="step-number">2</div>
+          <div class="step-title">
+            <h2>Download Binaries</h2>
+            <p>Get the official Bitcoin software and verification files</p>
+          </div>
+        </div>
+        <div class="step-content">
+          <div class="step-section">
+            <h3>Download Bitcoin Core</h3>
+            <p>Use the following commands to download the necessary files</p>
+            <div class="code-block">
+              wget
+              https://bitcoincore.org/bin/bitcoin-core-29.0/bitcoin-29.0-arm64-apple-darwin.zip
+            </div>
+            <div class="code-block">
+              wget https://bitcoincore.org/bin/bitcoin-core-29.0/SHA256SUMS
+            </div>
+            <div class="code-block">
+              wget https://bitcoincore.org/bin/bitcoin-core-29.0/SHA256SUMS.asc
+            </div>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step2_download_terminal.png"
+                alt="Terminal showing bitcoin core download command execution"
+                class="step-image"
+              />
+              <p><em>Downloading Bitcoin Core using wget</em></p>
+            </div>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step2_download_verification_terminal.png"
+                alt="Terminal showing verification files download command execution"
+                class="step-image"
+              />
+              <p><em>Downloading verification files</em></p>
+            </div>
+
+            <p>
+              Navigate to
+              <a
+                href="https://bitcoincore.org/en/download"
+                class="external-link"
+                target="_blank"
+                ><strong>https://bitcoincore.org/en/download</strong></a
+              >
+            </p>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step2_download.png"
+                alt="Image showing the files to be downloaded from the Bitcoin Core website"
+                class="step-image"
+              />
+              <p><em>bitcoin-29.0-arm64-apple-darwin.zip</em></p>
+            </div>
+
+            <div class="warning-box">
+              <h4>⚠️ Security Note</h4>
+              <p>
+                Always download from the official website only. These
+                verification files are crucial for confirming the software
+                hasn't been tampered with.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Verify Downloads -->
+      <div class="step-card" , id="step3">
+        <div class="step-header">
+          <div class="step-number">3</div>
+          <div class="step-title">
+            <h2>Verify Downloads</h2>
+            <p>Ensure authenticity using checksums and signatures</p>
+          </div>
+        </div>
+        <div class="step-content">
+          <div class="step-section">
+            <h3>Check SHA256 Hash</h3>
+            <p>Open Terminal from your bitcointestnet directory and run:</p>
+            <div class="code-block">
+              shasum -a 256 --ignore-missing --check SHA256SUMS
+            </div>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step3_sha256sum.png"
+                alt="Image showing the results of verifying the SHA256 hash of the downloaded file"
+                class="step-image"
+              />
+              <p><em>bitcoin-29.0-arm64-apple-darwin.zip: OK</em></p>
+            </div>
+
+            <p>
+              This confirms the file wasn't corrupted or tampered with during
+              download.
+            </p>
+          </div>
+
+          <div class="step-section">
+            <h3>Verify GPG Signature</h3>
+            <p>
+              Visit
+              <a
+                href="https://github.com/bitcoin-core/guix.sigs/tree/main/builder-keys"
+                class="external-link"
+                target="_blank"
+                ><strong
+                  >https://github.com/bitcoin-core/guix.sigs/tree/main/builder-keys</strong
+                ></a
+              >
+              and download:
+            </p>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step3_download_pubkey.png"
+                alt="Image showing the github repo containing the public key of bitcoin core developers"
+                class="step-image"
+              />
+              <p><em>achow101.gpg</em> and <em>guggero.gpg</em></p>
+            </div>
+
+            <div class="code-block">gpg --import *.gpg</div>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step3_pubkey_import.png"
+                alt="Image showing the import of the public key in terminal"
+                class="step-image"
+              />
+            </div>
+
+            <p>
+              Use the public key of the Bitcoin Core developers to verify that
+              the SHA256SUMS file is authentic.
+            </p>
+            <div class="code-block">gpg --verify SHA256SUMS.asc</div>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step3_pubkey_verify.png"
+                alt="Image showing the verification of the public key in terminal"
+                class="step-image"
+              />
+              <p><em>Good signature from..</em></p>
+            </div>
+
+            <p>
+              This confirms the SHA256SUMS file containing the SHA256 hash of
+              the Bitcoin Core binary is authentic.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Install & Configure -->
+      <div class="step-card" , id="step4">
+        <div class="step-header">
+          <div class="step-number">4</div>
+          <div class="step-title">
+            <h2>Install & Configure</h2>
+            <p>Extract and configure Bitcoin Core</p>
+          </div>
+        </div>
+        <div class="step-content">
+          <div class="step-section">
+            <h3>Extract Bitcoin Core</h3>
+            <p>Use the following command to extract bitcoin core</p>
+            <div class="code-block">
+              unzip bitcoin-29.0-arm64-apple-darwin.zip
+            </div>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step4_core_install.png"
+                alt="Image showing the Extraction of bitcoin core in Terminal"
+                class="step-image"
+              />
+            </div>
+          </div>
+
+          <div class="step-section">
+            <h3>Create Configuration File</h3>
+            <p>
+              Navigate to
+              <code>~/Library/Application\ Support/bitcoin</code> and create
+              <strong>bitcoin.conf</strong>
+            </p>
+
+            <div class="config-block">
+              # Enable Testnet4<br />
+              testnet4=1<br />
+
+              # Enable Server mode<br />
+              server = 1<br />
+
+              # Set RPC Credentials<br />
+              rpcuser=bitcoin<br />
+              rpcpassword=bitcoin123<br />
+
+              # Enable full transaction index<br />
+              txindex=1<br />
+
+              # Enable ZMQ notification<br />
+              zmqpubrawblock=tcp://127.0.0.1:28334<br />
+              zmqpubrawtx=tcp://127.0.0.1:28335<br />
+              zmqpubhashblock=tcp://127.0.0.1:28336<br />
+
+              [testnet4]<br />
+              rpcbind=127.0.0.1<br />
+              rpcallowip=127.0.0.1<br />
+              rpcport=18332<br />
+            </div>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step4_core_config.png"
+                alt="Image showing the creation of bitcoin.conf file in the Bitcoin directory"
+                class="step-image"
+              />
+            </div>
+
+            <div class="warning-box">
+              <h4>📝 Configuration Note</h4>
+              <p>
+                This configuration runs Bitcoin Core on testnet4 - an
+                alternative Bitcoin blockchain specifically for testing and
+                development. For mainnet remove <code>'testnet4=1'</code> and
+                <code>[testnet4]</code> in the above configuration.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5: Blockchain Sync -->
+      <div class="step-card" , id="step5">
+        <div class="step-header">
+          <div class="step-number">5</div>
+          <div class="step-title">
+            <h2>Blockchain Sync</h2>
+            <p>Launch and sync your Bitcoin node</p>
+          </div>
+        </div>
+        <div class="step-content">
+          <div class="step-section">
+            <h3>Start Bitcoin Core</h3>
+            <p>From your bitcoinnode directory:</p>
+            <div class="code-block">open Bitcoin-Qt.app</div>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step5_start_core_command.png"
+                alt="Image showing the starting of the Bitcoin Core Qt app"
+                class="step-image"
+              />
+            </div>
+
+            <p>
+              Your node needs to sync with the testnet4 network. This process
+              can take some time. If a pre-synced testnet4 folder is provided by
+              your instructor, replace the existing testnet4 directory
+              <code>~/Library/Application\ Support/bitcoin/testnet4/</code> for
+              faster setup.
+            </p>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step5_testnet4_sync.png"
+                alt="Image showing the syncing of the Bitcoin Core Qt app"
+                class="step-image"
+              />
+              <p>
+                <em
+                  >Bitcoin Core is downloading and verifying all testnet4
+                  blocks. This creates a complete copy of the testnet blockchain
+                  on your machine.</em
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 6: Install Fulcrum -->
+      <div class="step-card" , id="step6">
+        <div class="step-header">
+          <div class="step-number">6</div>
+          <div class="step-title">
+            <h2>Install Electrum Server</h2>
+            <p>Install your personal electrum server</p>
+          </div>
+        </div>
+        <div class="step-content">
+          <div class="step-section">
+            <h3>Build Fulcrum from Source</h3>
+            <p>Fulcrum needs to be built from source on macOS.</p>
+            <div class="code-block">brew install qt@5 pkg-config</div>
+            <div class="code-block">
+              brew install zeromq miniupnpc rocksdb cmake
+            </div>
+            <div class="code-block">
+              git clone https://github.com/cculianu/Fulcrum.git
+            </div>
+            <div class="code-block">cd Fulcrum</div>
+            <div class="code-block">qmake Fulcrum.pro</div>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step6_qmake.png"
+                alt="Image showing building of Fulcrum in Terminal"
+                class="step-image"
+              />
+            </div>
+
+            <div class="code-block">make -j4</div>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step6_make.png"
+                alt="Image showing building of Fulcrum in Terminal"
+                class="step-image"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 7: Configure Fulcrum -->
+      <div class="step-card" , id="step7">
+        <div class="step-header">
+          <div class="step-number">7</div>
+          <div class="step-title">
+            <h2>Configure Fulcrum</h2>
+            <p>Set up Fulcrum to connect with Bitcoin Core</p>
+          </div>
+        </div>
+        <div class="step-content">
+          <div class="step-section">
+            <h3>Create Fulcrum Configuration</h3>
+            <p>
+              Inside the Fulcrum directory, create a configuration file:
+              <code>fulcrum.conf</code>
+            </p>
+
+            <div class="config-block">
+              server=1<br />
+              testnet4=1<br />
+
+              # Set data directory<br />
+              datadir = /data<br />
+
+              # BTC Core Credentials<br />
+              bitcoind = 127.0.0.1:18332<br />
+              rpcuser = bitcoin<br />
+              rpcpassword = bitcoin123<br />
+              rpcbind=127.0.0.1<br />
+              rpcallowip=127.0.0.1<br />
+            </div>
+          </div>
+
+          <div class="step-section">
+            <h3>Launch Fulcrum</h3>
+            <p>
+              With Bitcoin Core running, launch Fulcrum using the following
+              command
+            </p>
+            <div class="code-block">./Fulcrum fulcrum.conf</div>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step7_fulcrum_run.png"
+                alt="Image showing Fulcrum running in Terminal"
+                class="step-image"
+              />
+            </div>
+
+            <div class="warning-box">
+              <h4>⚠️ Important</h4>
+              <p>
+                Keep this terminal window open and running in the background.
+                Fulcrum needs to index all transactions, which may take time.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 8: Install Sparrow Wallet -->
+      <div class="step-card" , id="step8">
+        <div class="step-header">
+          <div class="step-number">8</div>
+          <div class="step-title">
+            <h2>Install Wallet</h2>
+            <p>Get your Bitcoin wallet interface</p>
+          </div>
+        </div>
+        <div class="step-content">
+          <div class="step-section">
+            <h3>Download Sparrow Wallet</h3>
+            <p>
+              Visit
+              <a
+                href="https://sparrowwallet.com/download/"
+                class="external-link"
+                target="_blank"
+                ><strong>https://sparrowwallet.com/download/</strong></a
+              >
+            </p>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step8_sparrow_sign.png"
+                alt="Image showing Sparrow signature"
+                class="step-image"
+              />
+              <p>
+                <em>sparrow-2.2.3-manifest.txt.asc</em> (signature file)<br />
+                <em>sparrow-2.2.3-manifest.txt</em> (manifest file)
+              </p>
+            </div>
+          </div>
+
+          <div class="step-section">
+            <h3>Verify Sparrow Wallet</h3>
+            <p>
+              Use Sparrow's built-in verification tool: Upload the signature,
+              manifest, and installer files
+            </p>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step8_sparrow_verify.png"
+                alt="Image showing Sparrow signature"
+                class="step-image"
+              />
+            </div>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step8_sparrow_verify2.png"
+                alt="Image showing Sparrow signature"
+                class="step-image"
+              />
+            </div>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step8_sparrow_verify3.png"
+                alt="Image showing Sparrow signature"
+                class="step-image"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 9: Connect Sparrow to Fulcrum -->
+      <div class="step-card" , id="step9">
+        <div class="step-header">
+          <div class="step-number">9</div>
+          <div class="step-title">
+            <h2>Connect Wallet</h2>
+            <p>Link Sparrow Wallet to your Fulcrum server</p>
+          </div>
+        </div>
+        <div class="step-content">
+          <div class="step-section">
+            <h3>Configure Sparrow Connection</h3>
+            <p>In Sparrow Wallet:</p>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step9_sparrow_switch_testnet4.png"
+                alt="Image showing Sparrow switching to testnet4"
+                class="step-image"
+              />
+            </div>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step9_sparrow_config.png"
+                alt="Image showing config for Sparrow "
+                class="step-image"
+              />
+              <p><em>127.0.0.1</em><br /><em>50001</em></p>
+            </div>
+
+            <p>You should see:</p>
+            <p>
+              <strong
+                >Connected to Fulcrum 1.12.0 on protocol version 1.4.2</strong
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 10: Create Wallet -->
+      <div class="step-card" , id="step10">
+        <div class="step-header">
+          <div class="step-number">10</div>
+          <div class="step-title">
+            <h2>Create Wallet</h2>
+            <p>Set up a new testnet4 wallet</p>
+          </div>
+        </div>
+        <div class="step-content">
+          <div class="step-section">
+            <h3>Generate New Wallet</h3>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step10_sparrow_create.png"
+                alt="Creating new wallet in Sparrow"
+                class="step-image"
+              />
+            </div>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step10_sparrow_mnemonic.png"
+                alt="Generating 12 seed words"
+                class="step-image"
+              />
+            </div>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step10_sparrow_generate12.png"
+                alt="Generating 12 seed words"
+                class="step-image"
+              />
+            </div>
+
+            <div class="warning-box">
+              <h4>🔒 Security Warning</h4>
+              <p>
+                <strong
+                  >Never input mnemonic words into any other device unless you
+                  are absolutely certain about what you are doing.</strong
+                >
+                Write down your mnemonic words in the exact order they appear.
+                For maximum security, consider stamping them onto steel plates
+                for long-term safekeeping.
+              </p>
+            </div>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step10_sparrow_confirm12.png"
+                alt="Confirm 12 seed words"
+                class="step-image"
+              />
+            </div>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step10_sparrow_reenter.png"
+                alt="Reentering 12 seed words"
+                class="step-image"
+              />
+            </div>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step10_sparrow_importkeystore.png"
+                alt="Importing the keystore"
+                class="step-image"
+              />
+            </div>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step10_sparrow_applying.png"
+                alt="Applying wallet settings"
+                class="step-image"
+              />
+            </div>
+
+            <div class="image-container">
+              <img
+                src="../images/mac/step10_sparrow_complete.png"
+                alt="Completed Sparrow setup"
+                class="step-image"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Success Message -->
+      <div class="success-box">
+        <h3>🎉 Congratulations!</h3>
+        <p>
+          Your complete Bitcoin sovereignty stack is now ready! You have Bitcoin
+          Core running, Fulcrum indexing transactions, and Sparrow Wallet
+          connected to your personal infrastructure.
+        </p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <a href="https://bitshala.org/" target="_blank" rel="noopener noreferrer">
+        <img
+          src="../images/bitshala-logo.png"
+          alt="Bitshala Logo"
+          class="footer-logo"
+        />
+      </a>
+      <p>
+        Created by
+        <a
+          href="https://github.com/jkciw"
+          class="github-link"
+          target="_blank"
+          rel="noopener noreferrer"
+          >@jkciw</a
+        >
+      </p>
+      <p><em>Empowering individuals with sovereign Bitcoin knowledge</em></p>
+      <p style="font-size: 0.8em; color: #999">
+        <em>Last updated: August 2025</em>
+      </p>
+    </footer>
+
+    <script>
+      // Progress indicator and TOC functionality
+      window.addEventListener("scroll", function () {
+        const scrollProgress = document.getElementById("scrollProgress");
+        const tocMenu = document.getElementById("tocMenu");
+        const progressFill = document.getElementById("progressFill");
+
+        const scrollTop = window.scrollY;
+        const docHeight = document.body.scrollHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+
+        progressFill.style.width = scrollPercent + "%";
+
+        if (scrollTop > 100) {
+          scrollProgress.classList.add("visible");
+          tocMenu.classList.add("visible");
+        } else {
+          scrollProgress.classList.remove("visible");
+          tocMenu.classList.remove("visible");
+        }
+
+        // Update active TOC item
+        updateActiveTocItem();
+      });
+
+      // Function to update active TOC item
+      function updateActiveTocItem() {
+        const stepCards = document.querySelectorAll(".step-card");
+        const tocItems = document.querySelectorAll(".toc-item");
+
+        let activeStep = null;
+        const scrollTop = window.scrollY;
+        const offset = 150; // Offset for better detection
+
+        stepCards.forEach((card) => {
+          const rect = card.getBoundingClientRect();
+          const cardTop = scrollTop + rect.top;
+          const cardBottom = scrollTop + rect.bottom;
+
+          // Check if the card is currently in the viewport
+          if (
+            scrollTop + offset >= cardTop &&
+            scrollTop + offset < cardBottom
+          ) {
+            const stepId = card.getAttribute("id");
+            if (stepId) {
+              activeStep = stepId.replace("step", "");
+            }
+          }
+        });
+
+        // Remove active class from all items
+        tocItems.forEach((item) => item.classList.remove("active"));
+
+        // Add active class to current step
+        if (activeStep) {
+          const activeItem = document.querySelector(
+            `[data-step="${activeStep}"]`
+          );
+          if (activeItem) {
+            activeItem.classList.add("active");
+          }
+        }
+      }
+
+      // Smooth scroll for TOC links
+      document.querySelectorAll(".toc-item").forEach((link) => {
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+          const targetId = this.getAttribute("href").substring(1);
+          const targetElement = document.getElementById(targetId);
+
+          if (targetElement) {
+            const headerOffset = 120; // Account for fixed navigation
+            const elementPosition = targetElement.getBoundingClientRect().top;
+            const offsetPosition =
+              elementPosition + window.pageYOffset - headerOffset;
+
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: "smooth",
+            });
+          }
+        });
+      });
+
+      // Add animation delays to step cards
+      document.addEventListener("DOMContentLoaded", function () {
+        const stepCards = document.querySelectorAll(".step-card");
+        stepCards.forEach((card, index) => {
+          card.style.animationDelay = index * 0.1 + "s";
+        });
+      });
+    </script>
+  </body>
+</html>

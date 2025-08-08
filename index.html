@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="description"
+      content="Learn to set up your own Bitcoin node with our comprehensive step-by-step workshop guide"
+    />
+    <meta
+      name="keywords"
+      content="Bitcoin, Bitcoin Node, Bitcoin Core, Workshop, Tutorial, Cryptocurrency"
+    />
+    <title>Bitcoin Node Workshop - Complete Setup Guide</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/bitshala-favicon.ico" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="images/bitshala-logo-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="images/bitshala-logo-16x16.png"
+    />
+    <!--- Cloudflare icons-->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+        color: #333;
+        background-color: #fff;
+      }
+
+      /* Compact Header with Logo */
+      .header-brand {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 0;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid #e9ecef;
+      }
+
+      .brand-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .bitshala-logo {
+        height: 40px;
+        width: auto;
+        transition: filter 0.3s ease;
+      }
+
+      .brand-info h1 {
+        margin: 0;
+        font-size: 1.8em;
+        color: #2c3e50;
+      }
+
+      .brand-tagline {
+        color: #666;
+        font-size: 0.9em;
+        margin: 0;
+      }
+
+      /* Compact Hero Section */
+      .hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 12px;
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .hero h2 {
+        font-size: 2em;
+        margin-bottom: 0.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .hero p {
+        font-size: 1.1em;
+        margin-bottom: 1rem;
+        opacity: 0.95;
+      }
+
+      .hero p:last-child {
+        margin-bottom: 0;
+      }
+
+      /* Compact Guide Cards */
+      .guide-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+      }
+
+      .guide-card {
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 1.5rem;
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .guide-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .guide-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #3498db, #2ecc71);
+      }
+
+      .guide-card h3 {
+        font-size: 1.5em;
+        margin-bottom: 0.8rem;
+        color: #2c3e50;
+      }
+
+      .guide-card p {
+        color: #666;
+        margin-bottom: 1.5rem;
+        font-size: 1em;
+        line-height: 1.5;
+      }
+
+      .start-button {
+        background: #3498db;
+        color: white;
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 6px;
+        text-decoration: none;
+        display: inline-block;
+        font-weight: bold;
+        font-size: 1em;
+        transition: background 0.3s;
+      }
+
+      .start-button:hover {
+        background: #2980b9;
+        color: white;
+      }
+
+      /* More compact sections */
+      .overview-section {
+        background: white;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+      }
+
+      .overview-section h2 {
+        color: #2c3e50;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 0.3rem;
+        margin-bottom: 1rem;
+        font-size: 1.5em;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+        margin: 1.5rem 0;
+      }
+
+      .feature-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.8rem;
+      }
+
+      .feature-icon {
+        font-size: 1.5em;
+        margin-top: 0.2rem;
+      }
+
+      .feature-content h3 {
+        color: #2c3e50;
+        margin-bottom: 0.3rem;
+        font-size: 1.1em;
+      }
+
+      .feature-content p {
+        color: #666;
+        margin: 0;
+        font-size: 0.95em;
+      }
+
+      .warning-box {
+        background: #fff3cd;
+        border: 2px solid #ffeaa7;
+        border-radius: 8px;
+        padding: 1.2rem;
+        margin: 1.5rem 0;
+      }
+
+      .warning-box h3 {
+        color: #856404;
+        margin-bottom: 0.8rem;
+        font-size: 1.2em;
+      }
+
+      .warning-box p {
+        color: #856404;
+        margin: 0;
+        font-size: 0.95em;
+      }
+
+      .prerequisites {
+        background: #e8f4fd;
+        border: 2px solid #3498db;
+        border-radius: 8px;
+        padding: 1.2rem;
+        margin: 1.5rem 0;
+      }
+
+      .prerequisites h3 {
+        color: #2980b9;
+        margin-bottom: 0.8rem;
+        font-size: 1.2em;
+      }
+
+      .prerequisites ul {
+        margin: 0;
+        padding-left: 1.3rem;
+      }
+
+      .prerequisites li {
+        margin-bottom: 0.3rem;
+        font-size: 0.95em;
+      }
+
+      /* Compact Footer */
+      .footer-brand {
+        text-align: center;
+        padding: 1.5rem 0;
+        border-top: 1px solid #e9ecef;
+        margin-top: 2rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .footer-logo {
+        height: 30px;
+        width: auto;
+        margin-bottom: 0.5rem;
+        opacity: 0.8;
+        transition: filter 0.3s ease;
+      }
+
+      .footer-brand p {
+        color: #666;
+        margin: 0.3rem 0;
+        font-size: 0.9em;
+      }
+
+      .footer-brand .bitshala-link {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .footer-brand .bitshala-link:hover {
+        text-decoration: underline;
+      }
+
+      .github-link {
+        color: #24292e;
+        text-decoration: none;
+        font-weight: 600;
+        font-family: monospace;
+      }
+
+      .github-link:hover {
+        color: #0366d6;
+        text-decoration: underline;
+      }
+
+      .github-link::before {
+        content: "👨‍💻 ";
+        margin-right: 0.2em;
+      }
+
+      /* Dark mode support */
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #1a1a1a;
+          color: #e0e0e0;
+        }
+
+        .bitshala-logo,
+        .footer-logo {
+          filter: invert(1) brightness(1.2);
+        }
+
+        .overview-section,
+        .guide-card {
+          background: #2a2a2a;
+          border-color: #404040;
+          color: #e0e0e0;
+        }
+
+        .header-brand {
+          border-bottom-color: #404040;
+        }
+
+        .brand-info h1 {
+          color: #e0e0e0;
+        }
+
+        .brand-tagline {
+          color: #b0b0b0;
+        }
+
+        .guide-card h3 {
+          color: #e0e0e0;
+        }
+
+        .guide-card p {
+          color: #b0b0b0;
+        }
+
+        .overview-section h2 {
+          color: #e0e0e0;
+          border-bottom-color: #58a6ff;
+        }
+
+        .feature-content h3 {
+          color: #e0e0e0;
+        }
+
+        .feature-content p {
+          color: #b0b0b0;
+        }
+
+        .prerequisites {
+          background: #1e3a5f;
+          border-color: #58a6ff;
+        }
+
+        .prerequisites h3 {
+          color: #58a6ff;
+        }
+
+        .prerequisites li {
+          color: #e0e0e0;
+        }
+
+        .warning-box {
+          background: #3d2a00;
+          border-color: #ffc107;
+        }
+
+        .warning-box h3 {
+          color: #ffc107;
+        }
+
+        .warning-box p {
+          color: #ffc107;
+        }
+
+        .footer-brand {
+          background: #2a2a2a;
+          border-top-color: #404040;
+        }
+
+        .footer-brand p {
+          color: #b0b0b0;
+        }
+
+        .footer-brand .bitshala-link {
+          color: #58a6ff;
+        }
+
+        .github-link {
+          color: #f0f6fc;
+        }
+
+        .github-link:hover {
+          color: #58a6ff;
+        }
+
+        .guide-card:hover {
+          box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1);
+        }
+      }
+
+      @media (max-width: 768px) {
+        body {
+          padding: 15px;
+        }
+
+        .header-brand {
+          flex-direction: column;
+          align-items: center;
+          gap: 0.8rem;
+        }
+
+        .brand-left {
+          flex-direction: column;
+          text-align: center;
+          gap: 0.5rem;
+        }
+
+        .hero h2 {
+          font-size: 1.6em;
+        }
+
+        .hero p {
+          font-size: 1em;
+        }
+
+        .guide-cards {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Compact Header with Logo -->
+    <header class="header-brand">
+      <div class="brand-left">
+        <a
+          href="https://bitshala.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            src="images/bitshala-logo.png"
+            alt="Bitshala Logo"
+            class="bitshala-logo"
+          />
+        </a>
+        <div class="brand-info">
+          <h1 style="text-align: center">The Sovereign Bitcoiner's ToolKit</h1>
+        </div>
+      </div>
+    </header>
+
+    <!-- Compact Hero Section -->
+    <section class="hero">
+      <h2>Complete Setup Guide</h2>
+      <p><strong>Learn to set up and run your own Bitcoin node</strong></p>
+      <p>
+        Download, Verify, Install, Pair and Use the Bitocin Core, Fulcrum and
+        Sparrow Wallet stack
+      </p>
+    </section>
+
+    <!-- Guide Selection Cards -->
+    <section class="guide-cards">
+      <div class="guide-card">
+        <h3><i class="fab fa-windows"></i> Windows Guide</h3>
+        <p>Setup guide for Windows machines</p>
+        <a href="win/index.html" class="start-button"
+          >View Instructions for Windows →</a
+        >
+      </div>
+
+      <div class="guide-card">
+        <h3><i class="fab fa-apple"></i> Mac Guide</h3>
+        <p>Setup guide for Mac machines.</p>
+        <a href="mac/index.html" class="start-button"
+          >View Instructions for Mac →</a
+        >
+      </div>
+    </section>
+
+    <!-- Workshop Overview -->
+    <section class="overview-section">
+      <h2>What You'll Learn</h2>
+
+      <div class="features-grid">
+        <div class="feature-item">
+          <div class="feature-icon">🔐</div>
+          <div class="feature-content">
+            <h3>Security</h3>
+            <p>
+              Learn proper verification methods, signature checking, and
+              security best practices related to installing softwares.
+            </p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">⚙️</div>
+          <div class="feature-content">
+            <h3>Node Configuration</h3>
+            <p>
+              Set up Bitcoin Core with necessary configuration files and network
+              settings.
+            </p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🔍</div>
+          <div class="feature-content">
+            <h3>Electrum Server</h3>
+            <p>
+              Set up a personal electrum server with necessary configuration and
+              network settings.
+            </p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">💰</div>
+          <div class="feature-content">
+            <h3>Wallet Integration</h3>
+            <p>
+              Connect Sparrow Wallet to your node via your electrum server and
+              achieve self sovereignity over your bitcon transactions.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prerequisites -->
+    <section class="prerequisites">
+      <h3>Prerequisites</h3>
+      <ul>
+        <li>
+          <strong>Storage:</strong> At least 15GB (testnet) / 2TB (mainnet) of
+          free disk space (preferably SSD)
+        </li>
+        <li><strong>Memory:</strong> 4GB RAM minimum (8GB recommended)</li>
+        <li>
+          <strong>Internet:</strong> Stable broadband connection for initial
+          blockchain download
+        </li>
+        <li>
+          <strong>Time:</strong> 2-4 hours for complete setup (depending on
+          internet speed)
+        </li>
+        <li>
+          <strong>Basic Skills:</strong> Comfort with downloading software and
+          using terminal/command line
+        </li>
+      </ul>
+    </section>
+
+    <!-- Important Security Warning -->
+    <section class="warning-box">
+      <h3>🔒 Critical Security Notice</h3>
+      <p>
+        <strong
+          >Never input mnemonic words into any device unless you are absolutely
+          certain about what you are doing.</strong
+        >
+        For maximum security, consider stamping your mnemonic words onto steel
+        plates for long-term safekeeping.
+      </p>
+    </section>
+
+    <!-- Workshop Structure -->
+    <section class="overview-section">
+      <h2>Overview of the process</h2>
+      <ol>
+        <li>
+          <strong>Initial Setup</strong> - Create workspace and organize files
+        </li>
+        <li>
+          <strong
+            >Download Binaries - Bitcoin Core, Fulcrum & Sparrow Wallet</strong
+          >
+          - Get official software and verification files
+        </li>
+        <li>
+          <strong>Verify Downloads</strong> - Check checksums and developer
+          signatures
+        </li>
+        <li>
+          <strong>Install & Configure</strong> - Set up Bitcoin Core, Fulcrum
+          and Sparrow Wallet with proper configuration
+        </li>
+        <li>
+          <strong>Blockchain Sync</strong> - Download and verify the Bitcoin
+          blockchain
+        </li>
+        <li>
+          <strong>Testing & Validation</strong> - Ensure your connection between
+          node -> electrum server -> wallet
+        </li>
+        <li>
+          <strong>Wallet & Transaction</strong> - Create a wallet and make
+          testnet transactions
+        </li>
+      </ol>
+    </section>
+
+    <!-- Getting Started -->
+    <section class="overview-section">
+      <h2>Ready to Start?</h2>
+      <p>
+        Choose your operating system above and begin your journey to running a
+        sovereign Bitcoin node. Each guide is designed to be followed
+        step-by-step with detailed screenshots and explanations.
+      </p>
+
+      <p>
+        <strong>Estimated completion time:</strong> 2-4 hours (most time spent
+        on blockchain download)
+      </p>
+      <p><strong>Difficulty level:</strong> Beginner to Intermediate</p>
+    </section>
+
+    <!-- Compact Footer with Bitshala Branding -->
+    <!-- Footer with Bitshala Branding and GitHub Attribution -->
+    <footer class="footer-brand">
+      <a href="https://bitshala.org/" target="_blank" rel="noopener noreferrer">
+        <img
+          src="images/bitshala-logo.png"
+          alt="Bitshala Logo"
+          class="footer-logo"
+        />
+      </a>
+      <p>
+        Created by
+        <a
+          href="https://github.com/jkciw"
+          class="github-link"
+          target="_blank"
+          rel="noopener noreferrer"
+          >@jkciw</a
+        >
+      </p>
+      <p><em>Empowering individuals with sovereign Bitcoin knowledge</em></p>
+      <p style="font-size: 0.8em; color: #999">
+        <em>Last updated: August 2025</em>
+      </p>
+    </footer>
+  </body>
+</html>
